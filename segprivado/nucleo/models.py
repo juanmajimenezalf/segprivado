@@ -6,7 +6,7 @@ class Medico(models.Model):
     apellidos = models.CharField(max_length=50, verbose_name="Apellidos")
     edad = models.IntegerField(verbose_name="Edad")
     fechaalta = models.DateTimeField(verbose_name="Fecha de alta")
-    especialidad = models.Choices([('MF', 'Medico de Familia'), ('Dig', 'Digestivo'), ('Neuro', 'Neurologo'), ('Derma', 'Dermatologo'), ('Trauma', 'Traumatologo')], verbose_name="Especialidad")
+    especialidad = models.Choices([('MF', 'Medico de Familia'), ('Dig', 'Digestivo'), ('Neuro', 'Neurologo'), ('Derma', 'Dermatologo'), ('Trauma', 'Traumatologo'),], verbose_name="Especialidad")
     username = models.CharField(max_length=30, verbose_name="Usuario")
     password = models.CharField(max_length=30, verbose_name="Contraseña")
     
@@ -35,7 +35,7 @@ class Medicamento(models.Model):
 class Compra(models.Model):
     fecha = models.DateTimeField(verbose_name="Fecha")
     idPaciente = models.ForeignKey(Paciente, on_delete=models.CASCADE, verbose_name="Paciente")
-    precio = models.FloatField(verbose_name="PrecCantidad")
+    precio = models.FloatField(verbose_name="Precio")
     
 class Compra_medicamento(models.Model):
     idCompra = models.ForeignKey(Compra, on_delete=models.CASCADE, verbose_name="Compra")
