@@ -1,43 +1,49 @@
+
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
-class Medico(models.Model):
-    nombre = models.CharField(max_length=30, verbose_name="Nombre")
-    apellidos = models.CharField(max_length=50, verbose_name="Apellidos")
-    edad = models.IntegerField(verbose_name="Edad")
-    fechaalta = models.DateTimeField(verbose_name="Fecha de alta")
-    especialidad = models.Choices([('MF', 'Medico de Familia'), ('Dig', 'Digestivo'), ('Neuro', 'Neurologo'), ('Derma', 'Dermatologo'), ('Trauma', 'Traumatologo'),], verbose_name="Especialidad")
-    username = models.CharField(max_length=30, verbose_name="Usuario")
-    password = models.CharField(max_length=30, verbose_name="Contraseña")
+class Usuario(AbstractUser):
+    MedicodeFamilia= 'MF'
+    Digestivo= 'DG'
+    Neurologo= 'NE'
+    Dermatologo= 'DT'
+    Traumatologo= 'TR'
+    SinEspecialidad= 'SE'
+    ESPECIALIDAD_CHOICES = [(MedicodeFamilia, 'Medico de Familia'),(Digestivo, 'Digestivo'),(Neurologo, 'Neurologo'),(Dermatologo, 'Dermatologo'),(Traumatologo, 'Traumatologo'),(SinEspecialidad, 'Sin Especialidad')]
+    first_name = models.CharField(max_length=30, verbose_name="Nombre", null=True)
+    last_name = models.CharField(max_length=30, verbose_name="Apellidos", null=True)
+    edad = models.IntegerField(null=True)
+    date_joined = models.DateTimeField(verbose_name="Fecha de alta", null=True)
+    especialidad = models.CharField(max_length=2, choices=ESPECIALIDAD_CHOICES, default=SinEspecialidad)
+    username = models.CharField(max_length=30, unique=True, verbose_name="Usuario", null=True)
+    password = models.CharField(max_length=30, verbose_name="Contraseña", null=True)
+    is_active = models.SmallIntegerField(verbose_name="Activo")
+    is_paciente = models.BooleanField('paciente status',null=True)
+    is_medico = models.BooleanField('medico status',null=True)
+    direccion = models.CharField(max_length=100, null=True)
+    foto = models.ImageField(upload_to='fotos/', null=True)
     
-class Paciente(models.Model):
-    nombre = models.CharField(max_length=30, verbose_name="Nombre")
-    apellidos = models.CharField(max_length=50, verbose_name="Apellidos")
-    edad = models.IntegerField(verbose_name="Edad")
-    direccion = models.CharField(max_length=100, verbose_name="Direccion")
-    foto = models.ImageField(upload_to='fotos', verbose_name="Foto")
-    username = models.CharField(max_length=30, verbose_name="Usuario")
-    password = models.CharField(max_length=30, verbose_name="Contraseña")
     
 class Cita(models.Model):
-    fecha = models.DateTimeField(verbose_name="Fecha")
-    observaciones = models.TextField(max_length=200, verbose_name="Observaciones")
-    idMedico = models.ForeignKey(Medico, on_delete=models.CASCADE, verbose_name="Medico")
-    idPaciente = models.ForeignKey(Paciente, on_delete=models.CASCADE, verbose_name="Paciente")
+    fecha = models.DateTimeField(null=True)
+    observaciones = models.TextField(max_length=200, null=True)
+    idMedico = models.ForeignKey(Usuario, on_delete=models.CASCADE, null=True, related_name='medico')
+    idPaciente = models.ForeignKey(Usuario, on_delete=models.CASCADE, null=True, related_name='paciente')
     
 class Medicamento(models.Model):
-    nombre = models.CharField(max_length=30, verbose_name="Nombre")
-    descripcion = models.TextField(max_length=100, verbose_name="Descripcion")
-    receta = models.CharField(max_length=1, verbose_name="Receta")
-    precio = models.FloatField(verbose_name="Precio")
-    stock = models.IntegerField(verbose_name="Stock")
+    nombre = models.CharField(max_length=30, null=True)
+    descripcion = models.TextField(max_length=100, null=True)
+    receta = models.CharField(max_length=1, null=True)
+    precio = models.FloatField(null=True)
+    stock = models.IntegerField(null=True)
     
 class Compra(models.Model):
-    fecha = models.DateTimeField(verbose_name="Fecha")
-    idPaciente = models.ForeignKey(Paciente, on_delete=models.CASCADE, verbose_name="Paciente")
-    precio = models.FloatField(verbose_name="Precio")
+    fecha = models.DateTimeField(null=True)
+    idPaciente = models.ForeignKey(Usuario, on_delete=models.CASCADE, null=True)
+    precio = models.FloatField(null=True)
     
 class Compra_medicamento(models.Model):
-    idCompra = models.ForeignKey(Compra, on_delete=models.CASCADE, verbose_name="Compra")
-    idMedicamento = models.ForeignKey(Medicamento, on_delete=models.CASCADE, verbose_name="Medicamento")
+    idCompra = models.ForeignKey(Compra, on_delete=models.CASCADE, null=True)
+    idMedicamento = models.ForeignKey(Medicamento, on_delete=models.CASCADE, null=True)
     
