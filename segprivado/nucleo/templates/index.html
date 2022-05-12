@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>GESTIÓN DE PROYECTOS DAM</title>
+        <title>SEGURIDAD PRIVADA DAM</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="{%static 'assets/favicon.ico'%}" />
         <!-- Font Awesome icons (free version)-->
@@ -26,7 +26,7 @@
                     <a class="carousel-control-prev-icon" href="{% url 'nucleo:home' %}"></a>
         
                
-                <a class="navbar-brand" href="#page-top">GESTIÓN DE PROYECTOS DAM</a>
+                <a class="navbar-brand" >SEGURIDAD PRIVADA DAM</a>
                 <button class="navbar-toggler text-uppercase font-weight-bold bg-primary text-white rounded" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                     Menu
                     <i class="fas fa-bars"></i>
@@ -36,11 +36,11 @@
                         {% if request.user.is_staff %}
                         <img src="{%static 'users/ADMIN.jpg'%}" alt="mdo" width="55" height="55" class="rounded-circle">  <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded">{{ user.username }}</a></li>
                         {%endif%}
-                        {% if  request.user.is_empleado %}
-                        <img src="{%static 'users/EMPLE.jpg'%}" alt="mdo" width="55" height="55" class="rounded-circle">  <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded">{{ user.username }}</a></li>
+                        {% if  request.user.is_paciente %}
+                        <img src="{%static 'users/ADMIN.jpg'%}" alt="mdo" width="55" height="55" class="rounded-circle">  <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded">{{ user.username }}</a></li>
                         {% endif %}
-                        {% if  request.user.is_cliente %}
-                        <img src="{%static 'users/CLIENTE.jpg'%}" alt="mdo" width="55" height="55" class="rounded-circle">  <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded">{{ user.username }}</a></li> 
+                        {% if  request.user.is_medico %}
+                        <img src="{%static 'users/ADMIN.jpg'%}" alt="mdo" width="55" height="55" class="rounded-circle">  <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded">{{ user.username }}</a></li> 
                         {%endif%}
                         
                         <li class="nav-item mx-0 mx-lg-1"><a class="nav-link py-3 px-0 px-lg-3 rounded" href="{% url 'viewProfile' %}">Profile</a></li>
@@ -66,22 +66,13 @@
         <footer class="footer text-center">
             <div class="container">
                 <div class="row">
-                    <!-- Footer Location-->
-                    <div class="col-lg-4 mb-5 mb-lg-0">
-                        <h4 class="text-uppercase mb-4">Localización</h4>
-                        <p class="lead mb-0">
-                            Av. María Auxiliadora, 
-                            <br />
-                            7, 11009 Cádiz
-                        </p>
-                    </div>
                     <!-- Footer Social Icons-->
                     
                     <!-- Footer About Text-->
-                    <div class="col-lg-4">
-                        <h4 class="text-uppercase mb-4">Sobre GestiónOfertas</h4>
+                    <div class="col-lg-6">
+                        <h4 class="text-uppercase mb-4">Sobre Segprivado</h4>
                         <p class="lead mb-0">
-                            Una web para el control de clientes y empleados en el entorno laboral.
+                            Gestionamos los datos de nuestros pacientes y medicos de forma segura y confidencial.
                         </p>
                     </div>
                 </div>

@@ -8,7 +8,7 @@
 <main class="form-signin">
 <form method="post">
   {% csrf_token %}
-  <h1 class="h3 mb-3 fw-normal">Por favor inicie sesion</h1>
+  <h1 class="h3 mb-3 fw-normal">Inicie Sesion</h1>
 
   <div class="form-floating">
     {{ form.username }}
@@ -18,15 +18,10 @@
     {{ form.password }}
     <label for="floatingPassword"></label>
   </div>
-
-  <div class="checkbox mb-3">
-    <label>
-      <input type="checkbox" value="remember-me"> Remember me
-    </label>
-  </div>
+  <br>
   <div class="col-md-offset-3">
-    <button class="btn btn-secondary" type="submit">Iniciar Sesion</button>
-    <a class="btn btn-secondary" href="{% url 'registro' %}" role="button">Nuevo Cliente</a>
+    <button class="btn btn-secondary" type="submit">Loguear</button>
+    <a class="btn btn-secondary" href="{% url 'registro' %}" role="button">Nuevo Paciente</a>
   </div>
 </form>
 </main>

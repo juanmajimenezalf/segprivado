@@ -18,7 +18,7 @@ class Usuario(AbstractUser):
     especialidad = models.CharField(max_length=2, choices=ESPECIALIDAD_CHOICES, default=SinEspecialidad)
     username = models.CharField(max_length=30, unique=True, verbose_name="Usuario", null=True)
     password = models.CharField(max_length=30, verbose_name="Contraseña", null=True)
-    is_active = models.SmallIntegerField(verbose_name="Activo")
+    is_active = models.SmallIntegerField(verbose_name="Activo", default=False)
     is_paciente = models.BooleanField('paciente status',null=True)
     is_medico = models.BooleanField('medico status',null=True)
     direccion = models.CharField(max_length=100, null=True)
