@@ -19,4 +19,4 @@ class UserCreationFormEmail(UserCreationForm):
 class EditUserProfileForm(UserChangeForm):
     class Meta:
         model = Usuario
-        fields=['username','nombre', 'apellidos', 'direccion']
+        fields=['username','first_name', 'last_name', 'direccion']

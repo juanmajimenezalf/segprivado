@@ -19,7 +19,7 @@
   --bs-orange: #fd7e14;
   --bs-yellow: #ffc107;
   --bs-green: #198754;
-  --bs-teal: #1abc9c;
+  --bs-teal: #1a7bbc;
   --bs-cyan: #0dcaf0;
   --bs-white: #fff;
   --bs-gray: #6c757d;
@@ -240,7 +240,7 @@ a {
   text-decoration: underline;
 }
 a:hover {
-  color: #15967d;
+  color: #3b4df0;
 }
 
 a:not([href]):not([class]), a:not([href]):not([class]):hover {
