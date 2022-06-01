@@ -9,9 +9,17 @@
 <div class="col d-flex justify-content-center">
   <div class="card text-secondary"><a class="btn btn-secondary" href="">Medicos</a>
     <div class="card-block">
-      <br /><h5>Gestión de Usuarios</h5></div><br /></div>
+      <br /><h5>Gestión de Usuarios</h5>
+    </div><br />
+  </div>
 </div>
 <br />
+<div class="col d-flex justify-content-center">
+  <div class="card text-secondary"><a class="btn btn-secondary" href="{% url 'nucleo:indexMedicamento' %}">Medicamentos</a>
+    <div class="card-block">
+      <br /><h5>Gestión de Medicamentos</h5>
+    </div><br />
+  </div>
 </div>
 {% endif %}
 {% if request.user.is_paciente or request.user.is_medico%}
