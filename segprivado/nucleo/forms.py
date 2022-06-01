@@ -45,3 +45,13 @@ class citaForm(forms.ModelForm):
         if Cita.objects.filter(fecha=fecha, idMedico=idMedico).count() > 3:
             raise forms.ValidationError("Ese medico no esta disponible en esa fecha")
         return fecha
+
+class citaFormTratamiento(forms.ModelForm):
+    class Meta:
+        model = Cita
+        fields = ['observaciones',]
+        labels = {'observaciones':'Observaciones'}
+        widgets = { 
+            'observaciones': forms.Textarea(attrs={'class':'form-control'}),
+            
+        }

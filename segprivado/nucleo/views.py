@@ -84,3 +84,14 @@ class createCita(CreateView):
          return HttpResponseRedirect(reverse('nucleo:home'))
       else:
          return self.render_to_response(self.get_context_data(form=form))
+
+def citasActual(request):
+   citas = Cita.objects.filter(fecha__gte=datetime.date.today(), idMedico=request.user.id)
+   context = {'citas': citas}
+   return render(request, 'nucleo/cita/indexM.html', context)
+
+class citaTratamiento(UpdateView):
+   model = Cita
+   form_class = citaFormTratamiento
+   template_name = 'nucleo/cita/update.html'
+   success_url = reverse_lazy('nucleo:actualizarCita')
