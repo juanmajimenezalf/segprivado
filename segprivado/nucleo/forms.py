@@ -18,10 +18,11 @@ class medicamentoForm(forms.ModelForm):
             }
 
 class citaForm(forms.ModelForm):
-    model = Cita
-    fields = ['fecha', 'idMedico',]
-    labels = {'fecha':'Fecha', 'idMedico':'Medico'}
-    widgets = { 
-        'fecha': forms.DateTimeInput(attrs={'class':'form-control'}),
-        'idMedico': forms.Select(attrs={'class':'form-control', 'choices':[Usuario.objects.filter(is_medico=True).values('first_name','last_name')]}),
-    }
+    class Meta:
+        model = Cita
+        fields = ['fecha', 'idMedico',]
+        labels = {'fecha':'Fecha', 'idMedico':'Medico'}
+        widgets = { 
+            'fecha': forms.DateInput(format= ('%d/%m/%Y'), attrs={'class':'form-control'}),
+            'idMedico': forms.Select(attrs={'class':'form-control', 'choises':[]}),
+        }
