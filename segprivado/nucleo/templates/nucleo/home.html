@@ -3,7 +3,13 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-
+{% if messages %}
+    <div class="alert alert-success">
+        {% for message in messages %}
+            {{ message }}
+        {% endfor %}
+    </div>
+{% endif %}
 {% if request.user.is_staff %}
 
 <div class="col d-flex justify-content-center">
@@ -32,5 +38,15 @@
 </div>
 <br />
 {% endif %}
+{% if request.user.is_medico %}
+<div class="col d-flex justify-content-center">
+  <div class="card text-secondary"><a class="btn btn-secondary" href="{% url 'nucleo:indexMCita' %}">Citas</a>
+    <div class="card-block">
+      <br /><h5>Gestión de Citas</h5>
+    </div><br />
+  </div>
+</div>
+{% endif %}
+
 
 {% endblock %}
