@@ -15,4 +15,6 @@ urlpatterns = [
     path('especialidad/', views.medicosEspecilidad.as_view(), name="especialidad"),
 
     path('cita/', views.createCita.as_view(), name="pedirCita"),
+    path('cita/indexM/', views.citasActual, name="indexMCita"),
+    path('cita/update/<int:pk>/', views.citaTratamiento.as_view(), name="actualizarCita"),
 ]
