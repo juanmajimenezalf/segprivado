@@ -18,11 +18,30 @@ class medicamentoForm(forms.ModelForm):
             }
 
 class citaForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(citaForm, self).__init__(*args, **kwargs)
+        self.fields['idMedico'].queryset = Usuario.objects.filter(is_medico=True)
+        
     class Meta:
         model = Cita
         fields = ['fecha', 'idMedico',]
         labels = {'fecha':'Fecha', 'idMedico':'Medico'}
+        
+        
         widgets = { 
-            'fecha': forms.DateInput(format= ('%d/%m/%Y'), attrs={'class':'form-control'}),
-            'idMedico': forms.Select(attrs={'class':'form-control', 'choises':[]}),
+            'fecha': forms.DateInput(attrs={'type':'date'}),
+            
         }
+
+    def clean_fecha(self):
+        fecha = self.cleaned_data['fecha']
+        if fecha < datetime.date.today():
+            raise forms.ValidationError("La fecha debe ser mayor a la actual")
+        return fecha
+
+    def clean_dis(self):
+        fecha = self.cleaned_data['fecha']
+        idMedico = self.cleaned_data['idMedico']
+        if Cita.objects.filter(fecha=fecha, idMedico=idMedico).count() > 3:
+            raise forms.ValidationError("Ese medico no esta disponible en esa fecha")
+        return fecha

@@ -77,6 +77,8 @@ class createCita(CreateView):
       form = self.form_class(request.POST)
       if form.is_valid():
          cita = form.save(commit=False)
+         cita.idPaciente = self.request.user
+         cita.idMedico = form.cleaned_data['idMedico']
          cita.save()
          messages.success(request, 'Cita creada correctamente')
          return HttpResponseRedirect(reverse('nucleo:home'))

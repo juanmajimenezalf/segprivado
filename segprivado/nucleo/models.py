@@ -23,6 +23,9 @@ class Usuario(AbstractUser):
     is_medico = models.BooleanField('medico status',null=True)
     direccion = models.CharField(max_length=100, null=True)
     foto = models.ImageField(upload_to='fotos/', null=True)
+
+    def __str__(self):
+        return self.first_name + " " + self.last_name
     
     
 class Cita(models.Model):
