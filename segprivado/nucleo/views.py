@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy, reverse
 from nucleo.models import Usuario
 from nucleo.forms import *
-from django.views.generic import CreateView, UpdateView
+from django.views.generic import CreateView, UpdateView, ListView
 from django.contrib import messages
 # Create your views here.
 
@@ -49,3 +49,21 @@ def medicamento(request):
    medicamentos = Medicamento.objects.all()
    context = {'medicamentos': medicamentos}
    return render(request, 'nucleo/medicamentos/index.html', context)
+
+class medicosEspecilidad(ListView):
+   model = Usuario
+   template_name = 'nucleo/especialidad.html'
+
+   def get_context_data(self, **kwargs):
+      context = super().get_context_data(**kwargs)
+      especialidadGet = self.request.GET.get('especialidad')
+      
+      if(self.request.GET.get('especialidad')!=0):
+         data = Usuario.objects.filter(especialidad=especialidadGet, is_medico=True)
+      else:
+         data = Usuario.objects.filter(is_medico=True)
+      
+      context['data'] = data
+      return context
+
+

@@ -2,9 +2,10 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from django.views.generic import CreateView, UpdateView
+from django.views.generic import CreateView, UpdateView, ListView
 from django.contrib.auth.views import LoginView, LogoutView
 from registration.forms import EditUserProfileForm, UserCreationFormEmail
+from nucleo.models import Usuario
 
 # Create your views here.
 
@@ -38,3 +39,19 @@ class UserEditView(UpdateView):
 
     def get_object(self):
         return self.request.user
+
+class medicosEspecilidad(ListView):
+   model = Usuario
+   template_name = 'especialidad.html'
+
+   def get_context_data(self, **kwargs):
+      context = super().get_context_data(**kwargs)
+      especialidadGet = self.request.GET.get('especialidad')
+      
+      if(self.request.GET.get('especialidad')!=0):
+         data = Usuario.objects.filter(especialidad=especialidadGet, is_medico=True)
+      else:
+         data = Usuario.objects.all()
+      
+      context['data'] = data
+      return context
