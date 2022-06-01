@@ -8,6 +8,7 @@ from django.contrib import messages
 from django.utils.decorators import method_decorator
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
+from nucleo.decorators import *
 # Create your views here.
 
 @login_required
@@ -78,6 +79,7 @@ class medicosEspecilidad(ListView):
       return context
 
 @method_decorator(login_required, name='dispatch')
+@method_decorator(paciente, name='dispatch')
 class createCita(CreateView):
    model = Cita
    form_class = citaForm
@@ -98,12 +100,14 @@ class createCita(CreateView):
          return self.render_to_response(self.get_context_data(form=form))
 
 @login_required
+@medico
 def citasActual(request):
    citas = Cita.objects.filter(fecha__gte=datetime.date.today(), idMedico=request.user.id)
    context = {'citas': citas}
    return render(request, 'nucleo/cita/indexM.html', context)
 
 @method_decorator(login_required, name='dispatch')
+@method_decorator(medico, name='dispatch')
 class citaTratamiento(UpdateView):
    model = Cita
    form_class = citaFormTratamiento
