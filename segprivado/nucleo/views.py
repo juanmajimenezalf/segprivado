@@ -5,6 +5,9 @@ from nucleo.models import Usuario
 from nucleo.forms import *
 from django.views.generic import CreateView, UpdateView, ListView
 from django.contrib import messages
+from django.utils.decorators import method_decorator
+from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 
@@ -16,6 +19,8 @@ def home(request):
  }
     return render(request, 'nucleo/home.html')
 
+@method_decorator(login_required, name='dispatch')
+@method_decorator(staff_member_required, name='dispatch')
 class medicamentoCreate(CreateView):
       model = Medicamento
       form_class = medicamentoForm
@@ -33,18 +38,24 @@ class medicamentoCreate(CreateView):
          else:
             return self.render_to_response(self.get_context_data(form=form))
 
+@method_decorator(login_required, name='dispatch')
+@method_decorator(staff_member_required, name='dispatch')
 class medicamentoUpdate(UpdateView):
       model = Medicamento
       form_class = medicamentoForm
       template_name = 'nucleo/medicamentos/create.html'
       success_url = reverse_lazy('nucleo:indexMedicamento')
 
+@login_required
+@staff_member_required
 def medicamentoDelete(request, pk):
    medicamento = get_object_or_404(Medicamento, id=pk)
    medicamento.delete()
    messages.success(request, 'Medicamento eliminado correctamente')
    return redirect('nucleo:indexMedicamento')
 
+@login_required
+@staff_member_required
 def medicamento(request):
    medicamentos = Medicamento.objects.all()
    context = {'medicamentos': medicamentos}
@@ -65,6 +76,7 @@ class medicosEspecilidad(ListView):
       
       context['data'] = data
       return context
+
 
 class createCita(CreateView):
    model = Cita
