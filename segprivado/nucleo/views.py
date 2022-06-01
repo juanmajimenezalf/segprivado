@@ -10,7 +10,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 
-
+@login_required
 def home(request):
     medico=Usuario.objects.filter(is_medico=True)
     
@@ -77,7 +77,7 @@ class medicosEspecilidad(ListView):
       context['data'] = data
       return context
 
-
+@method_decorator(login_required, name='dispatch')
 class createCita(CreateView):
    model = Cita
    form_class = citaForm
@@ -97,11 +97,13 @@ class createCita(CreateView):
       else:
          return self.render_to_response(self.get_context_data(form=form))
 
+@login_required
 def citasActual(request):
    citas = Cita.objects.filter(fecha__gte=datetime.date.today(), idMedico=request.user.id)
    context = {'citas': citas}
    return render(request, 'nucleo/cita/indexM.html', context)
 
+@method_decorator(login_required, name='dispatch')
 class citaTratamiento(UpdateView):
    model = Cita
    form_class = citaFormTratamiento
