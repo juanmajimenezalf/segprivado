@@ -16,3 +16,12 @@ class medicamentoForm(forms.ModelForm):
             'precio': forms.NumberInput(attrs={'class':'form-control'}), 
             'stock': forms.NumberInput(attrs={'class':'form-control'})
             }
+
+class citaForm(forms.ModelForm):
+    model = Cita
+    fields = ['fecha', 'idMedico',]
+    labels = {'fecha':'Fecha', 'idMedico':'Medico'}
+    widgets = { 
+        'fecha': forms.DateTimeInput(attrs={'class':'form-control'}),
+        'idMedico': forms.Select(attrs={'class':'form-control', 'choices':[Usuario.objects.filter(is_medico=True).values('first_name','last_name')]}),
+    }

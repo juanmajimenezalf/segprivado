@@ -22,8 +22,14 @@
   </div>
 </div>
 {% endif %}
-{% if request.user.is_paciente or request.user.is_medico%}
-
+{% if request.user.is_paciente %}
+<div class="col d-flex justify-content-center">
+  <div class="card text-secondary"><a class="btn btn-secondary" href="{% url 'nucleo:pedirCita' %}">Citas</a>
+    <div class="card-block">
+      <br /><h5>Gestión de Citas</h5>
+    </div><br />
+  </div>
+</div>
 <br />
 {% endif %}
 

@@ -13,4 +13,6 @@ urlpatterns = [
     path('medicamento/delete/<int:pk>/', views.medicamentoDelete, name="eliminarMedicamento"),
 
     path('especialidad/', views.medicosEspecilidad.as_view(), name="especialidad"),
+
+    path('cita/', views.createCita.as_view(), name="pedirCita"),
 ]

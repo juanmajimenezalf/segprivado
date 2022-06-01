@@ -66,4 +66,19 @@ class medicosEspecilidad(ListView):
       context['data'] = data
       return context
 
+class createCita(CreateView):
+   model = Cita
+   form_class = citaForm
+   template_name = 'nucleo/cita/create.html'
+   success_url = reverse_lazy('nucleo:home')
 
+   def post(self, request, *args, **kwargs):
+      self.object = self.get_object
+      form = self.form_class(request.POST)
+      if form.is_valid():
+         cita = form.save(commit=False)
+         cita.save()
+         messages.success(request, 'Cita creada correctamente')
+         return HttpResponseRedirect(reverse('nucleo:home'))
+      else:
+         return self.render_to_response(self.get_context_data(form=form))
