@@ -2,7 +2,7 @@ from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.decorators import user_passes_test
 from django.http import HttpResponseRedirect
 
-from nucleo.models import User
+from nucleo.models import Usuario
 
 
 def paciente(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login_url='home'):
