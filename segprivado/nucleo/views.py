@@ -159,3 +159,11 @@ class filterPaciente(ListView):
       context['citas'] = citas
       context['pacientes'] = pacientes
       return context
+
+class createCompra(CreateView):
+   model = Compra
+   form_class = compraForm
+   template_name = 'nucleo/compra/create.html'
+   success_url = reverse_lazy('nucleo:pedirCompra')
+   
+  

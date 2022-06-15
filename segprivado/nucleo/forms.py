@@ -55,3 +55,22 @@ class citaFormTratamiento(forms.ModelForm):
             'observaciones': forms.Textarea(attrs={'class':'form-control'}),
             
         }
+
+class compraForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(compraForm, self).__init__(*args, **kwargs)
+        
+
+    class Meta:
+        model = Compra
+        fields = ['fecha','precio']
+        labels = {'fecha':'Fecha', 'idPaciente':'Paciente', 'precio':'Total'}
+        widgets = {
+            'fecha': forms.DateInput(attrs={
+                'disabled': True,
+                'value':datetime.date(datetime.now())
+                }),
+            'precio': forms.NumberInput(attrs={
+                'disabled': True,
+                'value':0.0}),
+        }
