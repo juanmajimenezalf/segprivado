@@ -113,3 +113,18 @@ class citaTratamiento(UpdateView):
    form_class = citaFormTratamiento
    template_name = 'nucleo/cita/update.html'
    success_url = reverse_lazy('nucleo:actualizarCita')
+
+def verCitas(request):
+   if(request.user.is_paciente):
+      citas = Cita.objects.filter(idPaciente=request.user.id)
+   context = {'citas': citas}
+   return render(request, 'nucleo/cita/indexP.html', context)
+
+class citasFilter(ListView):
+   model = Cita
+   template_name = 'nucleo/cita/indexP.html'
+
+   def get_context_data(self, **kwargs):
+      context = super().get_context_data(**kwargs)
+      context['citas'] = Cita.objects.all()
+      return context
