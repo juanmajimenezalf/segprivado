@@ -23,4 +23,5 @@ urlpatterns = [
     path('cita/filterP/', views.filterPaciente.as_view(), name="filterPaciente"),
 
     path('compra/', views.createCompra.as_view(), name="pedirCompra"),
+    path('compra/add/<int:pk>/', views.createCompra.addMedicamento, name="addMedicamento"),
 ]

@@ -9,6 +9,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from nucleo.decorators import *
+from .carrito import Carrito
 # Create your views here.
 
 @login_required
@@ -165,5 +166,47 @@ class createCompra(CreateView):
    form_class = compraForm
    template_name = 'nucleo/compra/create.html'
    success_url = reverse_lazy('nucleo:pedirCompra')
+   medicamentos = Medicamento.objects.all()
    
-  
+   def get_context_data(self, **kwargs):
+      context = super().get_context_data(**kwargs)
+      context['medicamentos'] = self.medicamentos
+      return context
+
+   def post(self, request, *args, **kwargs):
+      self.object = self.get_object
+      form = self.form_class(request.POST)
+      if form.is_valid():
+         compra = form.save(commit=False)
+         compra.idPaciente = self.request.user
+         compra.save()
+         messages.success(request, 'Compra creada correctamente')
+         return HttpResponseRedirect(reverse('nucleo:pedirCompra'))
+      else:
+         return self.render_to_response(self.get_context_data(form=form))
+   
+   def addMedicamento(request,pk):
+      carrito = Carrito(request)
+      medicamento = Medicamento.objects.get(id=pk)
+      carrito.agregar(medicamento)
+      return redirect('nucleo:pedirCompra')
+
+   def removeMedicamento(request,pk):
+      carrito = Carrito(request)
+      medicamento = Medicamento.objects.get(id=pk)
+      carrito.eliminar(medicamento=medicamento)
+      return redirect('nucleo:pedirCompra')
+
+   def restarMedicamento(request,pk):
+      carrito = Carrito(request)
+      medicamento = Medicamento.objects.get(id=pk)
+      carrito.restar(medicamento=medicamento)
+      return redirect('nucleo:pedirCompra')
+
+   def limpiarCarrito(request):
+      carrito = Carrito(request)
+      carrito.limpiar()
+      return redirect('nucleo:pedirCompra')
+
+   
+
