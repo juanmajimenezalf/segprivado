@@ -51,4 +51,4 @@ class Compra(models.Model):
 class Compra_medicamento(models.Model):
     idCompra = models.ForeignKey(Compra, on_delete=models.CASCADE, null=True)
     idMedicamento = models.ForeignKey(Medicamento, on_delete=models.CASCADE, null=True)
-    
+    cant = models.IntegerField(null=True)
