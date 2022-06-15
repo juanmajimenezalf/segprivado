@@ -126,5 +126,11 @@ class citasFilter(ListView):
 
    def get_context_data(self, **kwargs):
       context = super().get_context_data(**kwargs)
-      context['citas'] = Cita.objects.all()
+      fechaIni = self.request.GET.get('fechaIni', None)
+      fechaFin = self.request.GET.get('fechaFin', None)
+      if fechaIni != '' and fechaFin != '':
+         citas = Cita.objects.filter(idPaciente=self.request.user.id, fecha__range=(fechaIni, fechaFin))
+      else:
+         citas = Cita.objects.filter(idPaciente=self.request.user.id)
+      context['citas'] = citas
       return context
