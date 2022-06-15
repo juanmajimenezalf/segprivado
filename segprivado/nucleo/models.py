@@ -31,7 +31,7 @@ class Usuario(AbstractUser):
     
     
 class Cita(models.Model):
-    fecha = models.DateTimeField(null=True)
+    fecha = models.DateField(null=True)
     observaciones = models.TextField(max_length=200, null=True)
     idMedico = models.ForeignKey(Usuario, on_delete=models.CASCADE, null=True, related_name='medico')
     idPaciente = models.ForeignKey(Usuario, on_delete=models.CASCADE, null=True, related_name='paciente')
@@ -44,7 +44,7 @@ class Medicamento(models.Model):
     stock = models.IntegerField(null=True)
     
 class Compra(models.Model):
-    fecha = models.DateTimeField(null=True)
+    fecha = models.DateField(null=True)
     idPaciente = models.ForeignKey(Usuario, on_delete=models.CASCADE, null=True)
     precio = models.FloatField(null=True)
     

@@ -1,5 +1,5 @@
 from cProfile import label
-import datetime
+from datetime import datetime
 from faulthandler import disable
 from nucleo.models import *
 from django import forms
@@ -35,8 +35,8 @@ class citaForm(forms.ModelForm):
 
     def clean_fecha(self):
         fecha = self.cleaned_data['fecha']
-        if fecha < datetime.date.today():
-            raise forms.ValidationError("La fecha debe ser mayor a la actual")
+        if fecha < datetime.date(datetime.now()):
+            raise forms.ValidationError("La fecha debe ser mayor o igual a la actual")
         return fecha
 
     def clean_dis(self):
