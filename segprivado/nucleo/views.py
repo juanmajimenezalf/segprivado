@@ -102,7 +102,7 @@ class createCita(CreateView):
 @login_required
 @medico
 def citasActual(request):
-   citas = Cita.objects.filter(fecha__gte=datetime.date.today(), idMedico=request.user.id)
+   citas = Cita.objects.filter(fecha__gte=datetime.date(datetime.now()), idMedico=request.user.id)
    context = {'citas': citas}
    return render(request, 'nucleo/cita/indexM.html', context)
 
@@ -132,5 +132,26 @@ class citasFilter(ListView):
          citas = Cita.objects.filter(idPaciente=self.request.user.id, fecha__range=(fechaIni, fechaFin))
       else:
          citas = Cita.objects.filter(idPaciente=self.request.user.id)
+      context['citas'] = citas
+      return context
+
+def verCitasMedico(request):
+   if(request.user.is_medico):
+      citas = Cita.objects.filter(idMedico=request.user.id)
+      paciente = citas.values_list('idPaciente', flat=True).distinct()
+      pacientes = Usuario.objects.filter(id__in=paciente)
+   context = {'citas': citas, 'pacientes': pacientes}
+   return render(request, 'nucleo/cita/historicoM.html', context)
+
+class filterPaciente(ListView):
+   model = Cita
+   template_name = 'nucleo/cita/historicoM.html'
+
+   def get_context_data(self, **kwargs):
+      context = super().get_context_data(**kwargs)
+      paciente = self.request.GET.get('paciente', None)
+      pacientes = Usuario.objects.filter(id__in=paciente)
+      if paciente != '':
+         citas = Cita.objects.filter(idMedico=self.request.user.id, idPaciente=paciente)
       context['citas'] = citas
       return context

@@ -19,4 +19,6 @@ urlpatterns = [
     path('cita/update/<int:pk>/', views.citaTratamiento.as_view(), name="actualizarCita"),
     path('cita/index/', views.verCitas, name="indexCita"),
     path('cita/filter/', views.citasFilter.as_view(), name="filterCita"),
+    path('cita/historialM/', views.verCitasMedico, name="historialMCita"),
+    path('cita/filterP/', views.filterPaciente.as_view(), name="filterPaciente"),
 ]
