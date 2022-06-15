@@ -151,8 +151,11 @@ class filterPaciente(ListView):
       context = super().get_context_data(**kwargs)
       paciente = self.request.GET.get('paciente', None)
       pacientes = Usuario.objects.filter(id__in=paciente)
-      if paciente != '':
+      if paciente != '0':
          citas = Cita.objects.filter(idMedico=self.request.user.id, idPaciente=paciente)
+      else:
+         citas = Cita.objects.filter(idMedico=self.request.user.id)
+         pacientes = Usuario.objects.filter(id__in=citas.values_list('idPaciente', flat=True).distinct())
       context['citas'] = citas
       context['pacientes'] = pacientes
       return context
