@@ -154,4 +154,5 @@ class filterPaciente(ListView):
       if paciente != '':
          citas = Cita.objects.filter(idMedico=self.request.user.id, idPaciente=paciente)
       context['citas'] = citas
+      context['pacientes'] = pacientes
       return context
