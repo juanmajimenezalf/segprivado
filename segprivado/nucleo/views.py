@@ -143,9 +143,9 @@ class citasFilter(ListView):
       fechaIni = self.request.GET.get('fechaIni', None)
       fechaFin = self.request.GET.get('fechaFin', None)
       if fechaIni != '' and fechaFin != '':
-         citas = Cita.objects.filter(idPaciente=self.request.user.id, fecha__range=(fechaIni, fechaFin))
+         citas = Cita.objects.filter(idPaciente=self.request.user.id, fecha__range=(fechaIni, fechaFin)).filter(fecha__lte=datetime.date(datetime.now())).order_by('fecha')
       else:
-         citas = Cita.objects.filter(idPaciente=self.request.user.id)
+         citas = Cita.objects.filter(idPaciente=self.request.user.id).filter(fecha__lte=datetime.date(datetime.now())).order_by('fecha')
       context['citas'] = citas
       return context
 
@@ -153,7 +153,7 @@ class citasFilter(ListView):
 @medico
 def verCitasMedico(request):
    if(request.user.is_medico):
-      citas = Cita.objects.filter(idMedico=request.user.id)
+      citas = Cita.objects.filter(idMedico=request.user.id, fecha__lte=datetime.date(datetime.now())).order_by('fecha')
       paciente = citas.values_list('idPaciente', flat=True).distinct()
       pacientes = Usuario.objects.filter(id__in=paciente)
    context = {'citas': citas, 'pacientes': pacientes}
@@ -170,9 +170,9 @@ class filterPaciente(ListView):
       paciente = self.request.GET.get('paciente', None)
       pacientes = Usuario.objects.filter(id__in=paciente)
       if paciente != '0':
-         citas = Cita.objects.filter(idMedico=self.request.user.id, idPaciente=paciente)
+         citas = Cita.objects.filter(idMedico=self.request.user.id, idPaciente=paciente, fecha__lte=datetime.date(datetime.now())).order_by('fecha')
       else:
-         citas = Cita.objects.filter(idMedico=self.request.user.id)
+         citas = Cita.objects.filter(idMedico=self.request.user.id, fecha__lte=datetime.date(datetime.now())).order_by('fecha')
          pacientes = Usuario.objects.filter(id__in=citas.values_list('idPaciente', flat=True).distinct())
       context['citas'] = citas
       context['pacientes'] = pacientes
@@ -233,7 +233,7 @@ class loginAPI(APIView):
 
    def post(self, request, format=None):
       try:
-         data:request.data
+         data=request.data
       except ParseError as error:
          return Response(
             'INVALID JSON - {0}'.format(error.detail),
@@ -283,7 +283,7 @@ class  historialCitas_APIView(APIView):
 class medicos_APIView(APIView):
    permission_classes = [IsAuthenticated]     
    def get(self, request, format=None, *args, **kwargs):
-      citas = Cita.objects.filter(idPaciente=request.user.id, fecha__lte=datetime.date(datetime.now()))
+      citas = Cita.objects.filter(idPaciente=request.user.id, fecha__lte=datetime.date(datetime.now())).order_by('fecha')
       medicos = Usuario.objects.filter(id__in=citas.values_list('idMedico', flat=True).distinct())
       serializer = medicoSerializer(medicos, many=True)
       return Response(serializer.data)
