@@ -36,6 +36,9 @@ class Cita(models.Model):
     idMedico = models.ForeignKey(Usuario, on_delete=models.CASCADE, null=True, related_name='medico')
     idPaciente = models.ForeignKey(Usuario, on_delete=models.CASCADE, null=True, related_name='paciente')
     
+    class Meta:
+        [ordering] = ['fecha']
+        
 class Medicamento(models.Model):
     nombre = models.CharField(max_length=30, null=True)
     descripcion = models.TextField(max_length=100, null=True)
