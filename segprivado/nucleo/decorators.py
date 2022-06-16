@@ -35,9 +35,9 @@ def same_user(func):
         if not request.user.is_staff:
             if not (user.id == request.user.id):
                 
-                if request.user.is_cliente == True:
+                if request.user.is_paciente == True:
                     return HttpResponseRedirect('/')
-                elif request.user.is_empleado == True:
+                elif request.user.is_medico == True:
                     return HttpResponseRedirect('/')
 
         return func(request, *args, kwargs)
