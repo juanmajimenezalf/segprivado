@@ -26,3 +26,20 @@ def medico(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login_url='ho
     if function:
         return actual_decorator(function)
     return actual_decorator
+
+def same_user(func):
+    def check_and_call(request, *args, kwargs):
+        pk = kwargs['pk']
+        user = Usuario.objects.get(pk=pk)
+
+        if not request.user.is_staff:
+            if not (user.id == request.user.id):
+                
+                if request.user.is_cliente == True:
+                    return HttpResponseRedirect('/')
+                elif request.user.is_empleado == True:
+                    return HttpResponseRedirect('/')
+
+        return func(request, *args, kwargs)
+
+    return check_and_call
