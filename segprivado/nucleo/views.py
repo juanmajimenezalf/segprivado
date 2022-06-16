@@ -108,6 +108,9 @@ class createCita(CreateView):
          return HttpResponseRedirect(reverse('nucleo:home'))
       else:
          return self.render_to_response(self.get_context_data(form=form))
+   
+   def dispatch(self, request, *args, **kwargs):
+         return super().dispatch(request, *args, **kwargs)
 
 @login_required
 @medico
