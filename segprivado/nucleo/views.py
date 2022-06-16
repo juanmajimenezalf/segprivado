@@ -5,11 +5,20 @@ from nucleo.models import Usuario
 from nucleo.forms import *
 from django.views.generic import CreateView, UpdateView, ListView
 from django.contrib import messages
+from django.contrib.auth.hashers import check_password
 from django.utils.decorators import method_decorator
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
 from nucleo.decorators import *
+from nucleo.serializers import citaSerializer, medicoSerializer
 from .carrito import Carrito
+
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.exceptions import ParseError
+from rest_framework import serializers, status
+from rest_framework.authtoken.models import Token
+from rest_framework.permissions import IsAuthenticated
 # Create your views here.
 
 @login_required
@@ -208,5 +217,63 @@ class createCompra(CreateView):
       carrito.limpiar()
       return redirect('nucleo:pedirCompra')
 
-   
+class loginAPI(APIView):
+   def get(self, request, format=None):
+      return Response({'detail':'GET Response'})
 
+   def post(self, request, format=None):
+      try:
+         data:request.data
+      except ParseError as error:
+         return Response(
+            'INVALID JSON - {0}'.format(error.detail),
+            status=status.HTTP_400_BAD_REQUEST
+         )
+      if "user" not in data or "password" not in data:
+         return Response(
+            'Credenciales incorrectas',
+            status=status.HTTP_401_UNAUTHORIZED
+         )
+      
+      user = Usuario.objects.get(username=data["user"])
+
+      if not user:
+         return Response(
+            'Usuario no encontrado',
+            status=status.HTTP_404_NOT_FOUND
+         )
+      if user.is_paciente == False or user.is_active == False:
+         return Response(
+            'Usuario no autorizado',
+            status=status.HTTP_404_NOT_FOUND
+         )
+      if check_password(data["password"], user.password)==False:
+         return Response(
+            'Credenciales incorrectas',
+            status=status.HTTP_404_NOT_FOUND
+         )
+      token = Token.objects.get_or_create(user=user)
+
+      return Response({'token': token[0].key})
+
+class  historialCitas_APIView(APIView):
+   permission_classes = [IsAuthenticated]     
+   def get(self, request, format=None, *args, **kwargs):
+      citas = Cita.objects.filter(idPaciente=request.user.id, fecha__lte=datetime.date(datetime.now()))
+      serializer = citaSerializer(citas, many=True)
+      return Response(serializer.data)
+   
+   def post(self, request, format=None, *args, **kwargs):
+      serializer = citaSerializer(data=request.data)
+      if serializer.is_valid():
+         serializer.save()
+         return Response(serializer.data, status=status.HTTP_201_CREATED)
+      return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class medicos_APIView(APIView):
+   permission_classes = [IsAuthenticated]     
+   def get(self, request, format=None, *args, **kwargs):
+      citas = Cita.objects.filter(idPaciente=request.user.id, fecha__lte=datetime.date(datetime.now()))
+      medicos = Usuario.objects.filter(id__in=citas.values_list('idMedico', flat=True).distinct())
+      serializer = medicoSerializer(medicos, many=True)
+      return Response(serializer.data)

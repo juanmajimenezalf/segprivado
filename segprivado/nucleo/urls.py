@@ -24,4 +24,8 @@ urlpatterns = [
 
     path('compra/', views.createCompra.as_view(), name="pedirCompra"),
     path('compra/add/<int:pk>/', views.createCompra.addMedicamento, name="addMedicamento"),
+
+    path('api/login/', views.loginAPI.as_view(), name="loginAPI"),
+    path('api/medicos/', views.medicos_APIView.as_view(), name="medicosAPI"),
+    path('api/citas/', views.historialCitas_APIView.as_view(), name="citasAPI"),
 ]
