@@ -124,12 +124,16 @@ class citaTratamiento(UpdateView):
    template_name = 'nucleo/cita/update.html'
    success_url = reverse_lazy('nucleo:actualizarCita')
 
+@login_required
+@paciente
 def verCitas(request):
    if(request.user.is_paciente):
       citas = Cita.objects.filter(idPaciente=request.user.id)
    context = {'citas': citas}
    return render(request, 'nucleo/cita/indexP.html', context)
 
+@method_decorator(login_required, name='dispatch')
+@method_decorator(paciente, name='dispatch')
 class citasFilter(ListView):
    model = Cita
    template_name = 'nucleo/cita/indexP.html'
@@ -145,6 +149,8 @@ class citasFilter(ListView):
       context['citas'] = citas
       return context
 
+@login_required
+@medico
 def verCitasMedico(request):
    if(request.user.is_medico):
       citas = Cita.objects.filter(idMedico=request.user.id)
@@ -153,6 +159,8 @@ def verCitasMedico(request):
    context = {'citas': citas, 'pacientes': pacientes}
    return render(request, 'nucleo/cita/historicoM.html', context)
 
+@method_decorator(login_required, name='dispatch')
+@method_decorator(medico, name='dispatch')
 class filterPaciente(ListView):
    model = Cita
    template_name = 'nucleo/cita/historicoM.html'
@@ -170,6 +178,8 @@ class filterPaciente(ListView):
       context['pacientes'] = pacientes
       return context
 
+@method_decorator(login_required, name='dispatch')
+@method_decorator(paciente, name='dispatch')
 class createCompra(CreateView):
    model = Compra
    form_class = compraForm
