@@ -7,7 +7,7 @@ import { AlertController } from '@ionic/angular';
 })
 export class ServicesService {
 
-  apiURL = 'http://localhost:8000/api';
+  apiURL = 'http://127.0.0.1:8000/api';
   data_user: any;
 
   constructor(private http: HttpClient, private alertController: AlertController) { }
@@ -33,5 +33,33 @@ export class ServicesService {
         return;
       });
     });
+  }
+
+  async obtenerMedicos(){
+    return await new Promise<any>(reslove => {
+      this.http.get(this.apiURL + '/medicos/',{
+        headers: new HttpHeaders().set('Authorization', 'Token ' + this.data_user.token)
+      })
+        .subscribe(data => {
+          console.log(data);
+          reslove(data);
+        }, err => {
+          console.log(err);
+        });
+    })
+  }
+
+  async obtenerCitas(){
+    return await new Promise<any>(reslove => {
+      this.http.get(this.apiURL + '/citas/',{
+        headers: new HttpHeaders().set('Authorization', 'Token ' + this.data_user.token)
+      })
+        .subscribe(data => {
+          console.log(data);
+          reslove(data);
+        }, err => {
+          console.log(err);
+        });
+    })
   }
 }

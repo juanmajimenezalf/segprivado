@@ -1,20 +1,22 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Blank
+      Citas
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+<ion-content>
+  <ion-item>
+    <ion-label>Medicos</ion-label>
+    <ion-select (ionChange)="obtenerCitas($event)">
+      <ion-select-option *ngFor="let m of medicos" [value]=m.id>{{m.first_name}} {{m.last_name}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-list>
+    <ion-item *ngFor="let c of citas, let i = index">
+      <ion-label>{{c.fecha}}</ion-label>
+      <ion-label>{{c.observaciones}}</ion-label>
+    </ion-item>
+  </ion-list>
 </ion-content>
